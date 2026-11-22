@@ -1,10 +1,9 @@
-// TripsScreen.js — Shows all available trips as a tappable list
+// TripsScreen.js — Shows all available trips as a tappable list + Create Trip button
 
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import sampleTrips from '../data/sampleTrips';
 
-export default function TripsScreen({ navigation }) {
+export default function TripsScreen({ navigation, trips, onAddTrip }) {
   // renderItem is called for each trip in the FlatList
   const renderTrip = ({ item }) => (
     <TouchableOpacity
@@ -23,9 +22,18 @@ export default function TripsScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Your Trips</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.heading}>Your Trips</Text>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={() => navigation.navigate('CreateTrip', { onAddTrip })}
+        >
+          <Text style={styles.createButtonText}>+ Plan Trip</Text>
+        </TouchableOpacity>
+      </View>
+
       <FlatList
-        data={sampleTrips}
+        data={trips}
         keyExtractor={(item) => item.id}
         renderItem={renderTrip}
         contentContainerStyle={styles.list}
@@ -40,11 +48,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     padding: 16,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   heading: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 16,
     color: '#333',
+  },
+  createButton: {
+    backgroundColor: '#2196F3',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+  },
+  createButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   list: {
     paddingBottom: 20,
